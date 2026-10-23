@@ -7,10 +7,9 @@ const path = require('path');
 // ═══════════════════════════════════════════
 // CONFIG
 // ═══════════════════════════════════════════
-const TELEGRAM_BOT_TOKEN = '8159044475:AAGIxd5gpPiDaBvqq8eIKpNnXJIjbO22HJE';
-const TELEGRAM_CHAT_ID   = '6816093099';
-const PORT = 3000;
-const PORT_HTTPS = 3443;
+const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
+const TELEGRAM_CHAT_ID   = process.env.TELEGRAM_CHAT_ID;
+const PORT = process.env.PORT || 3000;   
 
 // ═══════════════════════════════════════════
 // SETUP
